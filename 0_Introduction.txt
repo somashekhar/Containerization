@@ -1,0 +1,72 @@
+Linux Container:
+    Control Groups [cgroup]
+    Namespaces
+
+Container Toolkits:
+    - Imctfy
+    - docker
+    - rkt
+    - singularity
+    - podman
+
+Docker:
+    - Toolkit for managing containerized applications
+    - Promoted the view that one container = one application
+    - Originally built around lxc 
+    - Replaced lxc with their own runtime, libcontainer
+    
+Standardization and OCI[Open Container Initiative]:
+    - Specifies exactly how a container must be started and stopped, inclusing isolation, processes and filesystem.
+    - A reference implementation exists, called "runc"
+    - Docker uses runc by default now
+    - Other implementations also exists
+    - As long as any other containerization follows OCI standard we can configure docker to use it
+    
+
+Important Contributions of Docker:
+    - Docker Imgage format
+    - Docker Registry Protocol
+    - Docker Engine
+
+  Note:
+    Docker host: Machine on which docker engine runs. Docker Engine does all operations on it through docker rest API.
+    
+Docker Engine:
+    - A deamon or service
+    - Exposes a Rest API
+    - Manages all aspects of containerization
+    - Depends on lower-level tools for actually running containers:
+        - containerd
+        - runc
+    - Comes with a command line client to perform standard operations
+    - 64-bit only
+    
+Docker Images:
+    - Packaging format for applications
+    - Are blueprints for creating containers
+    - Contain data and metadata
+    - Stored in layers
+
+Understanding Image layers:
+    - Downloading of duplicate images is not done.
+    - File system of a container is dynamically generated at runtime.    
+
+  Golden Rule:
+    1. Images are immutable. So we create writable layer for a container. [container storage]
+    2. Containers are disposable.
+
+Image names or "tags":
+    - A single image, uniquely identified by a UUID or a hash, can have multiple names or "tags"
+    - Formally, image names have up to four parts:
+        [<registry>][<account>]<repository>[:<tag>]
+        Eg: docker.io/library/alphine:3.11
+            by default below values are assumed:
+                docker.io
+                library
+                latest
+
+commands:
+    whoami  
+    hostname
+    ps aux                
+
