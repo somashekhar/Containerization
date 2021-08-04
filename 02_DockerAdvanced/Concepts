@@ -1,0 +1,32 @@
+Search image:
+    https://hub.docker.com/_/<image name>
+    https://hub.docker.com/_/ubuntu
+    https://hub.docker.com/_/ghost
+
+    images are built either using debian or alpine.
+
+While using the container image from docker registry remeber below points,
+    Command         :   How to use this image
+    Storage         :   where to store the data or docker volume
+    Connectivity    :   what port application lists on. Port forwarding or custom port.
+    Configuration   :   environment variables/ Configuration section.
+
+docker container create --name gh1 \
+    --mount type=volume,source=gh1vol,target=/var/lib/ghost/content \
+    --network pnet1 --publish 9002:2368 \
+    --env url=http://localhost:9002 \
+    ghost:latest 
+
+docker container create --name pg1 \
+    --mount type=volume,source=pg1vol,target=/var/lib/postgressql/data \
+    --network=pnet1 \
+    --env POSTGRES_PASSWORD=infoblox \
+    --env POSTGRES_USER=admin
+
+docker container create --name adminer1 \
+    --network pnet1 \
+    --publish 9005:8080 \
+    --env ADMINER_DEFAULT_SERVER=pg1 adminer 
+
+    Access the server at 
+        http://localhost:9005/

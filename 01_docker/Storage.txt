@@ -1,0 +1,76 @@
+# Docker Storage
+docker system df
+docker container diff <container name>
+    A   Added
+    C   Changed
+    D   Deleted
+Note: Above command shows the files change at container storage.
+
+Container storage is created at start of container.
+If container does not write anything then it takes 0 size.
+The moment container is deleted (not stopped) the container storage is gone permanently.
+
+Docker gives 3 options for mounting an external storage:
+    1. Volume mounting
+    2. Bind mounting
+    3. tmpfs mounting
+
+Volume Mount:    
+    A volume object is unit of storage maintained by docker engine.
+    docker engine would require "volume drivers" to access this storage, storage can be anywhere.
+
+    Storage technology solutions provide storage and volume drivers along with them.
+    "Local" is default volume driver for using host storage.
+    "docker system info", plugins will give you details.
+
+    Note:
+      docker plugin create 
+
+    We can see the files created under mount path.
+    cat /var/lib/docker/volumes/vol1/_data/name.txt
+
+    Volume will created if it does not exists when given creating container.
+
+    Two or more containers can read and write to same volume and files.
+    Application needs to take care of this issue.
+    docker container create --name v2 -it --mount type=volume,source=vol1,target=/vols/vol1 --mount type=volume,source=vol2,target=/data alpine
+
+    Want to get volumes from another container 
+    docker container create --name v3 --volumes-from v2 
+
+    Create volume without name i.e., Anonymus volume. 
+    docker container create --name v4 --mount type=volume,target=/newdata alpine
+
+    Want to delete volume Anonymus volumes created by container while deleting docker container ?
+    docker container rm --volumes -f v4
+
+    When will be volumes deleted ?
+        Anonymus volume will get deleted when container gets deleted using --volumes option. Only those created by it.
+        Normal volumes will get deleted when we remove them manually.
+
+    Who creates volume ?
+    docker engine through the volume drivers.
+
+    When is volume created ?
+    Manually or Container create 
+
+    Note:
+      Volumes cannot be deleted until they are used by containers.
+
+Binding Mounting:
+    Mounting a path on the host to a path in the container.
+    Gives acess to paths of host file system. Do not use it until really required.
+
+    Used when need to access host file system.
+
+    docker container create --name b1 -it --mount type=bind,source=/home/sbidari/docker/bind1,target=/data alpine
+
+tempfs:
+    Gives a temperory storage and will not be part of file system.
+    Store files until the container is running. Restart container to get new storage.
+    Cannot attach this to other containers.
+    
+    IO related or cache are the usecases.
+
+    docker container create --name b1 -it --mount type=tmpfs,target=/data alpine
+    docker container attach b1

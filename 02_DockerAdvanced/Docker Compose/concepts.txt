@@ -1,0 +1,14 @@
+Can create a stack using docker compose.
+
+
+property1: "1.2"
+
+property2:
+    subproperty1: value1
+    subproperty2: 
+
+
+
+
+docker compose [-f MANIFEST] COMMAND
+

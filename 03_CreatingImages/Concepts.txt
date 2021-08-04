@@ -1,0 +1,82 @@
+Create a container
+    1. Using build tool kit
+    2. Ask docker command line
+    3. Run container and then build fron it.
+
+Plan the image using,
+    1. Identify your PID 1, CMD property of image since it defines the life time of the container.
+    2. List all dependencies needed to run PID 1.
+        libraries, binaries
+        configuration files, data files, other dependencies
+    3. Divide dependencies on 
+        a. things provided you and 
+        b. not provided by you.
+    4. Based on (3b) choose good base image. Do not build your image from scatch.
+    5. Copy all of (3a) into a directory
+
+|-------------------------------------------------------------------------------------------------|
+# Using container    
+docker container start bc1
+docker container cp os-release bc1:/etc/
+docker container start bc1
+docker container attach bc1
+    cat /etc/os-release
+    apk wget curl vim 
+
+docker container commit bc1 myalpine:1.0    
+docker image histroy myalpine:1.0
+
+docker image tag myalpine:1.0 myalpine:latest
+
+|-------------------------------------------------------------------------------------------------|
+# Using Dockerfile
+FROM baseImage
+LABEL maintainer="yourname <youremail>"
+WORKDIR <directory name>
+COPY <source> <destination>
+    source is a relative path to the build context directory.
+    destination is absolute path in image. Make sure to use "/" aptly.
+RUN <commands to be run>
+EXPOSE <port on which your software listens>
+VOLUME <the dir where the data has to be mounted>
+CMD <what to be run on command line>
+ENTRYPOINT <>
+
+
+|*****************************************************************************|
+    Note:
+        cmd instruction is got from config.cmd from image.
+        if we set WORKDIR then this cmd will be executed from this.
+    Note:
+        when build is given then entire build directory is sent to docker engine.
+    Note:
+        data layers: FROM, RUN 
+        metadata   : COPY, LABEL , EXPOSE, VOLUME , CMD, ENTRYPOINT           
+    Note:
+        Command line = ENTRYPOINT + CMD
+        CMD is mandataroy but ENTRYPOINT is not.
+        ENTRYPOINT enables us to lock the commands to be given while we run it.
+        CMD can be completely replaces by parameters while running.
+
+|*****************************************************************************|
+FROM alpine:3.14.0
+LABEL maintainer="Som <somashekharvb@gmail.com>"
+# WORKDIR /etc
+COPY os-release /etc/
+RUN apk update && \
+    apk add vim curl 
+
+Note: Building image
+    docker image build -f <Dockerfile name> -t <tag name> <build directory>
+    docker image build -f Dockerfile.1.1 -t myalpine:1.1 .
+
+EXPOSE 8080
+VOLUME /var/lib/postgresql/data
+CMD /bin/sh
+
+CMD ["nginx", "-g", "deamon off"] or 
+
+CMD ["-g", "deamon off"]
+ENTRYPOINT ["nginx"]
+
+

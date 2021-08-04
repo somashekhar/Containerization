@@ -1,0 +1,35 @@
+# Docker Processes
+
+Deamons are run by linux init processes.
+In Container deamonization is not possible since it does not have access to init process.
+
+init -> docker deamon -> docker engine -> docker containers
+
+We can ask the system to start the container when system restarts with a restart policy while creating a container.
+    --restart policy
+        no              default
+        always
+        on-failure
+        unless-stopped
+
+What if container crashed ?
+When always policy choosen then it restarts.
+If on-failure choosen then if it fails with an error then it restarts.
+
+What if we stop manually ?
+When always policy choosen then it restarts when system restarts.
+
+
+We can make the container Initiative by,
+    1. make it Initiative by specifying at start
+    2. Start a new process and command to be executed on run by using docker exec.
+        docker container exec -it c0 /bin/sh
+
+Note:
+    We cannot use Ctrl + P Ctrl + Q to relogin in 2nd case.
+    We can exit from the new process created without stopping the container since it is not init process.
+
+Note:
+    We can create container with an entrypoint.
+
+    

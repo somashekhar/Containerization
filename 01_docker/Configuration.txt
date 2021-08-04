@@ -1,0 +1,11 @@
+Container is an application.
+The moment you start a container the application should start running.
+
+How to push a configuration to application running inside container ?
+    1. Environment variables
+    2. Bind mounting the configuration file
+    3. Over ride the CMD 
+
+docker container create --name e1 -it --env MYNAME=Som --env MYHOST=sbidari alpine
+
+
