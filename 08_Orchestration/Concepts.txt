@@ -1,0 +1,42 @@
+Cluster Nodes:
+    OS
+    CE
+    Agent and API
+    Shared store 
+        1. external node and API is made to connect to
+        2. On node
+        3. replica is kept on all nodes (no more used)
+
+Application:
+    Manifest file
+        when user submits the manifest to api server, api dumps it to shared storage.
+    Scheduler
+        through api it looks into shared store and write back decisions into the shared store.
+    Agent pulls this decisions from share storage and run the services.    
+
+    When a application fails on a node then,
+    1. Agent will send this update to api server. Agent can take a call to restart it.
+    2. Agent will send update and leave.
+    
+    When node is down then a component will get to know and write it into shared store.
+    Scheduler will wait for certain time and then writes a info that node is down and updates the apt config to stop running apps.
+    Also writes decision to run the apps on new nodes.
+
+# Docker swarm mode: https://labs.play-with-docker.com/
+  # Master
+    docker swarm init 
+    docker swarm init --advertise-addr eth0   [if there are multiple IPs]
+
+    docker node ls
+    docker swarm join-token worker
+    docker swarm join --token SWMTKN-1-1kvvpl91m9014v1mho372ei6whsv04f8zpojwyd4rzefqjj2kt-0m3o1bterypmiqksph6y010e0 192.168.0.18:2377
+
+  # Worker
+    docker swarm join --token SWMTKN-1-1kvvpl91m9014v1mho372ei6whsv04f8zpojwyd4rzefqjj2kt-0m3o1bterypmiqksph6y010e0 192.168.0.18:2377
+    docker swarm leave
+
+  # Running apps
+    docker stack deploy --compose-file stack.yaml st1 
+    docker stack ls 
+    docker stack services st1
+    docker stack ps st1

@@ -1,0 +1,10 @@
+Docker enterprise uses snyk tool 
+
+Opensource tool is trivy:
+    https://github.com/aquasecurity/trivy
+
+    wget https://github.com/aquasecurity/trivy/releases/download/v0.19.2/trivy_0.19.2_Linux-64bit.tar.gz
+    tar xzvf trivy_0.19.2_Linux-64bit.tar.gz
+    sudo cp trivy /usr/bin
+    trivy image alpine:latest    
+

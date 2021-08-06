@@ -79,4 +79,19 @@ CMD ["nginx", "-g", "deamon off"] or
 CMD ["-g", "deamon off"]
 ENTRYPOINT ["nginx"]
 
+|-------------------------------------------------------------------------------------------------|
+# Build kit [https://github.com/docker/buildx/releases/tag/v0.6.1]
+    1. build is done in layers
+    2. Configurable
+    3. Apt binaries
 
+cp buildx-v0.6.1.linux-amd64 ~/.docker/cli-plugins/docker-buildx
+chmod +x ~/.docker/cli-plugins/docker-buildx
+
+
+docker buildx ls 
+docker buildx create --name first
+docker buildx use first
+docker buildx ls
+
+docker buildx build -f Dockerfile.1.1 -t docker.io/sombidari/alpine:1.2  --platform amd64,arm64 --push .

@@ -1,0 +1,19 @@
+# Tag the image
+    docker image tag myalpine:1.0 docker.io/sombidari/myalpine:1.0
+    docker image tag myalpine:1.1 docker.io/sombidari/myalpine:1.1
+    docker image tag myalpine:latest docker.io/sombidari/myalpine:latest
+
+# Login to docker registry
+    docker login <name of registry>
+
+# Push images
+    docker image push sombidari/myalpine:1.0
+
+# Logout from docker
+    docker logout
+
+# Documentation
+    1. command
+    2. storage 
+    3. configuration 
+    4. connectivity

@@ -1,0 +1,9 @@
+We can control the amount of resources used by container using cgroups.
+
+docker image pull polinux/stress
+docker container create --name st1 polinux/stress stress -v --vm 5 --vm-bytes 100M
+docker container start st1
+docker container ls 
+docker container ps -a
+
+docker container create --name st2 --memory 350M --memory-swap 400M polinux/stress -v --vm 5 --vm-bytes 100M

@@ -1,0 +1,23 @@
+# Namespaces
+    1. Process namespace
+    2. Network namespace
+    3. Volume namespace
+
+
+    # Network namespace
+
+    docker container attach sc1 
+
+    # share process namespace
+    docker container create --name sc2 -it --pid container:s1 alpine
+    docker container start sc2
+    docker container inspect sc2 
+    docker container attach sc2 
+        ps aux 
+
+Side cart container:
+    1. Main container has to be running for a side cart to run.
+    2. When two containers share process namespace then main container stops then side cart also stops.
+    3. side cart can have a side cart 
+    4. 
+    
